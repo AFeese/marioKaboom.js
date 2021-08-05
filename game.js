@@ -1,5 +1,3 @@
-// const k = kaboom();
-
 kaboom({
   global: true,
   fullscreen: true,
@@ -36,6 +34,13 @@ scene("game", () => {
     "                                       ",
     "                                       ",
     "                                       ",
+    "                                       ",
+    "                                       ",
+    "                                       ",
+    "                                       ",
+    "                                       ",
+    "                                       ",
+    "                                       ",
     "===============================   =====",
   ];
   const levelCfg = {
@@ -47,4 +52,5 @@ scene("game", () => {
 });
 
 start("game");
+
 // console.log(start);
