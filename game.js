@@ -44,7 +44,7 @@ scene("game", () => {
   const levelCfg = {
     width: 20,
     height: 20,
-    "=": [sprite("block", solid())],
+    "=": [sprite("block"), solid()],
     $: [sprite("coin")],
     "%": [sprite("surprise"), solid(), "coin-surprise"],
     "*": [sprite("surprise"), solid(), "mushroom-surprise"],
