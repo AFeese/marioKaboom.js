@@ -6,6 +6,9 @@ kaboom({
   clearColor: [0, 0, 0, 1],
 });
 
+const MOVE_SPEED = 120;
+const JUMP_FORCE = 360;
+
 loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png");
 loadSprite("evil-shroom", "KPO3fR9.png");
@@ -41,6 +44,7 @@ scene("game", () => {
     "                       ^  ^  ()        ",
     "===============================   =====",
   ];
+
   const levelCfg = {
     width: 20,
     height: 20,
@@ -56,16 +60,80 @@ scene("game", () => {
     "^": [sprite("evil-shroom"), solid()],
     "#": [sprite("mushroom"), solid()],
   };
+
   const gameLevel = addLevel(map, levelCfg);
+
+  const scoreLabel = add([
+    text("test"),
+    pos(30, 6),
+    layer("ui"),
+    {
+      value: "test",
+    },
+  ]);
+
+  add([text("level" + "test", pos(4, 6))]);
+
+  function big() {
+    let timer = 0;
+    let isBig = false;
+    return {
+      update() {
+        if (isBig) {
+          //dt is Delta Time since last frame. Listed on the Kaboom.js docs.
+          timer -= dt();
+          if (timer <= 0) {
+            this.smallify();
+          }
+        }
+      },
+      isBig() {
+        return isBig;
+      },
+      smallify() {
+        this.scale = vec2(1);
+        timer = 0;
+        isBig = false;
+      },
+      biggify(time) {
+        this.scale = vec2(2);
+        timer = time;
+        isBig = true;
+      },
+    };
+  }
 
   const player = add([
     sprite("mario"),
     solid(),
     pos(30, 0),
+    big(),
     //by passing in body, this allows mario to fall with "gravity"
     body(),
     origin("bot"),
   ]);
+
+  player.on("headbump", (obj) => {
+    if (obj.is("coin-surprise")) {
+      gameLevel.spawn("$", obj.gridPos.sub(0, 1));
+      destroy(obj);
+      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+    }
+  });
+
+  keyDown("left", () => {
+    player.move(-MOVE_SPEED, 0);
+  });
+
+  keyDown("right", () => {
+    player.move(MOVE_SPEED, 0);
+  });
+
+  keyPress("space", () => {
+    if (player.grounded()) {
+      player.jump(JUMP_FORCE);
+    }
+  });
 });
 
 start("game");
