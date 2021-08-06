@@ -6,6 +6,9 @@ kaboom({
   clearColor: [0, 0, 0, 1],
 });
 
+const MOVE_SPEED = 120;
+const JUMP_FORCE = 360;
+
 loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png");
 loadSprite("evil-shroom", "KPO3fR9.png");
@@ -41,6 +44,7 @@ scene("game", () => {
     "                       ^  ^  ()        ",
     "===============================   =====",
   ];
+
   const levelCfg = {
     width: 20,
     height: 20,
@@ -56,6 +60,7 @@ scene("game", () => {
     "^": [sprite("evil-shroom"), solid()],
     "#": [sprite("mushroom"), solid()],
   };
+
   const gameLevel = addLevel(map, levelCfg);
 
   const scoreLabel = add([
@@ -77,6 +82,20 @@ scene("game", () => {
     body(),
     origin("bot"),
   ]);
+
+  keyDown("left", () => {
+    player.move(-MOVE_SPEED, 0);
+  });
+
+  keyDown("right", () => {
+    player.move(MOVE_SPEED, 0);
+  });
+
+  keyPress("space", () => {
+    if (player.grounded()) {
+      player.jump(JUMP_FORCE);
+    }
+  });
 });
 
 start("game");
