@@ -107,10 +107,18 @@ scene("game", () => {
     sprite("mario"),
     solid(),
     pos(30, 0),
+    big(),
     //by passing in body, this allows mario to fall with "gravity"
     body(),
     origin("bot"),
   ]);
+
+  player.on("headbump", (obj) => {
+    if (obj.is("coin-surprise")) {
+      gameLevel.spawn("$", obj.gridPos.sub(0, 1));
+      destroy(obj);
+    }
+  });
 
   keyDown("left", () => {
     player.move(-MOVE_SPEED, 0);
