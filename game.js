@@ -6,8 +6,6 @@ kaboom({
   clearColor: [0, 0, 0, 1],
 });
 
-// import k from "./kaboom";
-
 loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png");
 loadSprite("evil-shroom", "KPO3fR9.png");
@@ -59,6 +57,15 @@ scene("game", () => {
     "#": [sprite("mushroom"), solid()],
   };
   const gameLevel = addLevel(map, levelCfg);
+
+  const player = add([
+    sprite("mario"),
+    solid(),
+    pos(30, 0),
+    //by passing in body, this allows mario to fall with "gravity"
+    body(),
+    origin("bot"),
+  ]);
 });
 
 start("game");
